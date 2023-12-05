@@ -1,0 +1,12 @@
+{
+  "name": "advent-of-code-2023",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "watch": "nodemon"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2",
+    "nodemon": "^3.0.1"
+  }
+}
