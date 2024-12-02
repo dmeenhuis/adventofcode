@@ -5,13 +5,7 @@ case class Report(levels: Vector[Int]) {
   private def containsValidLevels(levels: Vector[Int]) = {
     val allAscending = levels == levels.sorted
     val allDescending = levels == levels.sorted.reverse
-
-    val allDiffsValid = levels.take(levels.size - 1)
-      .zip(levels.takeRight(levels.size - 1))
-      .forall { case (level, nextLevel) => {
-        val diff = (nextLevel - level).abs
-        diff >= 1 && diff <= 3
-      } }
+    val allDiffsValid = levels.sliding(2).forall((pair) => 1 to 3 contains (pair(1) - pair(0)).abs)
     
     (allAscending || allDescending) && allDiffsValid
   }
