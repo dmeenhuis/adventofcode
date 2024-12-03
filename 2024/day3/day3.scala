@@ -14,16 +14,19 @@ import scala.io.Source
     var i = 0
     var sum = 0
     var enabled = true
+    val tokenDo = "do()"
+    val tokenDont = "don't()"
 
     while (i < input.size) {
-      if (i + 4 < input.size && input.substring(i, i + 4) == "do()") {
+      
+      if (i + tokenDo.size < input.size && input.substring(i, i + tokenDo.size) == tokenDo) {
         enabled = true
-        i += 4
+        i += tokenDo.size
       }
 
-      if (i + 7 < input.size && input.substring(i, i + 7) == "don't()") {
+      if (i + tokenDont.size < input.size && input.substring(i, i + tokenDont.size) == tokenDont) {
         enabled = false
-        i += 7
+        i += tokenDont.size
       }
 
       val matched = pattern.findFirstMatchIn(input.substring(i))
