@@ -1,4 +1,4 @@
-package adventofcode2024.day1.part1
+package adventofcode2024.day1
 import scala.io.Source
 
 @main def main() = {

@@ -1,4 +1,4 @@
-package adventofcode2024.day2.part2
+package adventofcode2024.day2
 import scala.io.Source
 
 case class Report(levels: Vector[Int]) {
