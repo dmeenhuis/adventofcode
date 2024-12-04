@@ -20,7 +20,7 @@ import scala.io.Source
   def part1() = {
     val word = "XMAS"
 
-    def checkCoordinate(x: Int, y: Int) = {
+    def getXmasCountsForCoordinate(x: Int, y: Int) = {
       val right = input(y).slice(x, x + word.size)
       val left = input(y).splitAt(x + 1)._1.reverse.slice(0, word.size)
       val down = input.slice(y, y + word.size).map(line => line(x))
@@ -33,7 +33,7 @@ import scala.io.Source
       Vector(right, left, down, up, topLeft, topRight, bottomLeft, bottomRight).count(_.mkString == word)
     }
 
-    val wordMatches = allCoordinatesFromInput.map { case (x, y) => checkCoordinate(x, y) }.sum
+    val wordMatches = allCoordinatesFromInput.map(getXmasCountsForCoordinate).sum
     println(wordMatches)
   }
 
@@ -45,7 +45,7 @@ import scala.io.Source
       } yield (x + i, y + j)
     }
 
-    def hasXmas(x: Int, y: Int) = {
+    def hasXedMas(x: Int, y: Int) = {
       val coordsToCheck = getSurroundingCoords(x, y).toVector
       val charOptions = coordsToCheck.map { case (x, y) => safeIndexAt(x, y) }
       val leg1 = Vector(charOptions(0), charOptions(4), charOptions(8)).flatten.mkString
@@ -54,7 +54,7 @@ import scala.io.Source
       List(leg1, leg2).forall(List("MAS", "SAM").contains)
     }
 
-    val wordMatches = allCoordinatesFromInput.filter { case (x, y) => hasXmas(x, y) }.size
+    val wordMatches = allCoordinatesFromInput.filter(hasXedMas).size
     println(wordMatches)
   }
 

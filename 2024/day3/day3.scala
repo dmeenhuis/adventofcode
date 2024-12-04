@@ -42,6 +42,18 @@ import scala.io.Source
     sum
   }
 
+  def part2_refactored() = {
+    val pattern = "do\\(\\)|don't\\(\\)|mul\\(([\\d]+),([\\d]+)\\)".r
+    pattern.findAllMatchIn(input).foldLeft((0, true)) { case ((sum, enabled), m) => {
+      m.group(0) match {
+        case "do()" => (sum, true)
+        case "don't()" => (sum, false)
+        case _ => if (enabled) (sum + m.group(1).toInt * m.group(2).toInt, enabled) else (sum, enabled)
+      }
+    }}._1
+  }
+
   println(part1())
   println(part2())
+  println(part2_refactored())
 }
