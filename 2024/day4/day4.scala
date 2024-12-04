@@ -47,7 +47,7 @@ import scala.io.Source
 
     def hasXedMas(x: Int, y: Int) = {
       val coordsToCheck = getSurroundingCoords(x, y).toVector
-      val charOptions = coordsToCheck.map { case (x, y) => safeIndexAt(x, y) }
+      val charOptions = coordsToCheck.map(safeIndexAt)
       val leg1 = Vector(charOptions(0), charOptions(4), charOptions(8)).flatten.mkString
       val leg2 = Vector(charOptions(2), charOptions(4), charOptions(6)).flatten.mkString
 
