@@ -37,14 +37,8 @@ case class Rules(rules: Vector[Rule]) {
       val firstIndex = update.pageNumbers.indexOf(first)
       val lastIndex = update.pageNumbers.indexOf(last)
 
-      (firstIndex, lastIndex) match {
-        case (-1, _) => None
-        case (_, -1) => None
-        case (f, l) if f < l => Some(true)
-        case (f, l) if f > l => Some(false)
-        case _ => None
-      }
-    }}.flatten.forall(_ == true)
+      firstIndex == -1 || lastIndex == -1 || firstIndex < lastIndex
+    }}.forall(_ == true)
   }
 
   def invalidUpdates(updates: Vector[Update]) = updates.filter(update => !isUpdateValid(update))
