@@ -15,9 +15,7 @@ case class Calibration(testValue: Long, numbers: Vector[Long], operators: Vector
 
     // Combine the numbers with each operator combination
     val combinations = operatorCombinations.map { ops =>
-      numbers.zip(ops :+ " ").flatMap {
-        case (n, o) => Vector(n.toString, o)
-      }.dropRight(1)
+      numbers.zipAll(ops, 0L, "").flatMap { case (num, op) => Seq(num.toString, op) }
     }
 
     combinations.map(entries => {
