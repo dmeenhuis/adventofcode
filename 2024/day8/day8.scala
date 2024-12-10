@@ -7,9 +7,6 @@ case class Pos(x: Int, y: Int) {
 
   def -(that: Pos): Pos =
     Pos(x - that.x, y - that.y)
-
-  def sign(that: Pos): Pos =
-    Pos((x - that.x).sign, (y - that.y).sign)
 }
 
 case class Antenna(frequency: Char, position: Pos)
@@ -47,13 +44,7 @@ case class Antenna(frequency: Char, position: Pos)
           case _ => Set()
         }
 
-        val antinodes = posA.sign(posB) match {
-          case Pos(1, 1) => addPoints(posB, diff) ++ subtractPoints(posA, diff)
-          case Pos(-1, -1) => subtractPoints(posB, diff) ++ addPoints(posA, diff)
-          case Pos(1, -1) => subtractPoints(posB, diff) ++ addPoints(posA, diff)
-          case Pos(-1, 1) => subtractPoints(posB, diff) ++ addPoints(posA, diff)
-        }
-
+        val antinodes = subtractPoints(posB, diff) ++ addPoints(posA, diff)
         val antennaCoords = if (withResonantHarmonics) antennas.map(_.position) else Set()
 
         innerAntinodes ++ antinodes ++ antennaCoords
