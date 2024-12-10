@@ -1,14 +1,14 @@
 package adventofcode2024.day8
 import scala.io.Source
 
-case class Pos(x: Int, y: Int) {
-  def +(that: Pos): Pos = Pos(x + that.x, y + that.y)
-  def -(that: Pos): Pos = Pos(x - that.x, y - that.y)
-}
+object Day8 extends App {
+  case class Pos(x: Int, y: Int) {
+    def +(that: Pos): Pos = Pos(x + that.x, y + that.y)
+    def -(that: Pos): Pos = Pos(x - that.x, y - that.y)
+  }
 
-case class Antenna(frequency: Char, position: Pos)
+  case class Antenna(frequency: Char, position: Pos)
 
-@main def main() = {
   val input = Source.fromFile("day8.txt").getLines().map(line => line.toVector).toVector
   val allCoords = for { y <- input.indices; x <- input(y).indices } yield Pos(x, y)
 
