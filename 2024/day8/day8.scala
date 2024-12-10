@@ -1,7 +1,7 @@
 package adventofcode2024.day8
 import scala.io.Source
 
-object Day8 extends App {
+object Day8 extends App:
   case class Pos(x: Int, y: Int) {
     def +(that: Pos): Pos = Pos(x + that.x, y + that.y)
     def -(that: Pos): Pos = Pos(x - that.x, y - that.y)
@@ -34,4 +34,3 @@ object Day8 extends App {
 
   println(s"Day 1 size: ${calculateAntinodes(1).size}")
   println(s"Day 2 size: ${calculateAntinodes(input(0).size, true).size}")
-}
