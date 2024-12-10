@@ -24,10 +24,8 @@ case class Antenna(frequency: Char, position: Pos)
 
   def isWithinBounds(pos: Pos) = pos.x >= 0 && pos.y >= 0 && pos.x < input(0).size && pos.y < input.size
 
-  val antennaPattern = """^[a-zA-Z0-9]$""".r
-
   val antennas = allCoords
-    .filter { case Pos(x, y) => antennaPattern.matches(input(y)(x).toString) }
+    .filter { case Pos(x, y) => input(y)(x) != '.' }
     .map { case Pos(x, y) => Antenna(input(y)(x), Pos(x, y)) }
 
   def calculateAntinodes(depth: Int, withResonantHarmonics: Boolean = false) = {
@@ -54,7 +52,6 @@ case class Antenna(frequency: Char, position: Pos)
           case Pos(-1, -1) => subtractPoints(posB, diff) ++ addPoints(posA, diff)
           case Pos(1, -1) => subtractPoints(posB, diff) ++ addPoints(posA, diff)
           case Pos(-1, 1) => subtractPoints(posB, diff) ++ addPoints(posA, diff)
-          case _ => Set()
         }
 
         val antennaCoords = if (withResonantHarmonics) antennas.map(_.position) else Set()
