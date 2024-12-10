@@ -20,15 +20,12 @@ case class Antenna(frequency: Char, position: Pos)
 
   def calculateAntinodes(depth: Int, withResonantHarmonics: Boolean = false) =
     antennas.groupBy(_.frequency).values.foldLeft(Set[Pos]()) { case (antinodes, antennas) => {
-      antinodes ++ antennas.combinations(2).foldLeft(antinodes){ case (innerAntinodes, pair) => {
-        val posA = pair.head.position
-        val posB = pair.last.position
-        val diff = posA - posB
-
+      antinodes ++ antennas.combinations(2).foldLeft(antinodes){ case (innerAntinodes, IndexedSeq(a, b)) => {
         def subtract(p: Pos, d: Pos, count: Int = 0): Set[Pos] = if (count < depth) Set(p - d) ++ subtract(p - d, d, count + 1) else Set()
         def add(p: Pos, d: Pos, count: Int = 0): Set[Pos] = if (count < depth) Set(p + d) ++ add(p + d, d, count + 1) else Set()
-
-        val antinodes = subtract(posB, diff) ++ add(posA, diff)
+        
+        val diff = a.position - b.position
+        val antinodes = subtract(b.position, diff) ++ add(a.position, diff)
         val antennaCoords = if (withResonantHarmonics) antennas.map(_.position) else Set()
 
         innerAntinodes ++ antinodes ++ antennaCoords
