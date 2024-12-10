@@ -2,22 +2,15 @@ package adventofcode2024.day8
 import scala.io.Source
 
 case class Pos(x: Int, y: Int) {
-  def +(that: Pos): Pos =
-    Pos(x + that.x, y + that.y)
-
-  def -(that: Pos): Pos =
-    Pos(x - that.x, y - that.y)
+  def +(that: Pos): Pos = Pos(x + that.x, y + that.y)
+  def -(that: Pos): Pos = Pos(x - that.x, y - that.y)
 }
 
 case class Antenna(frequency: Char, position: Pos)
 
 @main def main() = {
   val input = Source.fromFile("day8.txt").getLines().map(line => line.toVector).toVector
-  
-  val allCoords = for {
-    y <- input.indices
-    x <- input(y).indices
-  } yield Pos(x, y)
+  val allCoords = for { y <- input.indices; x <- input(y).indices } yield Pos(x, y)
 
   def isWithinBounds(pos: Pos) = pos.x >= 0 && pos.y >= 0 && pos.x < input(0).size && pos.y < input.size
 
@@ -25,32 +18,22 @@ case class Antenna(frequency: Char, position: Pos)
     .filter { case Pos(x, y) => input(y)(x) != '.' }
     .map { case Pos(x, y) => Antenna(input(y)(x), Pos(x, y)) }
 
-  def calculateAntinodes(depth: Int, withResonantHarmonics: Boolean = false) = {
-    val frequencyMap = antennas.groupBy(_.frequency)
-
-    frequencyMap.values.foldLeft(Set[Pos]()) { case (antinodes, antennas) => {
+  def calculateAntinodes(depth: Int, withResonantHarmonics: Boolean = false) =
+    antennas.groupBy(_.frequency).values.foldLeft(Set[Pos]()) { case (antinodes, antennas) => {
       antinodes ++ antennas.combinations(2).foldLeft(antinodes){ case (innerAntinodes, pair) => {
         val posA = pair.head.position
         val posB = pair.last.position
         val diff = posA - posB
 
-        def subtractPoints(p: Pos, d: Pos, count: Int = 0): Set[Pos] = count match {
-          case num if num < depth => Set(p - d) ++ subtractPoints(p - d, d, count + 1)
-          case _ => Set()
-        }
+        def subtract(p: Pos, d: Pos, count: Int = 0): Set[Pos] = if (count < depth) Set(p - d) ++ subtract(p - d, d, count + 1) else Set()
+        def add(p: Pos, d: Pos, count: Int = 0): Set[Pos] = if (count < depth) Set(p + d) ++ add(p + d, d, count + 1) else Set()
 
-        def addPoints(p: Pos, d: Pos, count: Int = 0): Set[Pos] = count match {
-          case num if num < depth => Set(p + d) ++ addPoints(p + d, d, count + 1)
-          case _ => Set()
-        }
-
-        val antinodes = subtractPoints(posB, diff) ++ addPoints(posA, diff)
+        val antinodes = subtract(posB, diff) ++ add(posA, diff)
         val antennaCoords = if (withResonantHarmonics) antennas.map(_.position) else Set()
 
         innerAntinodes ++ antinodes ++ antennaCoords
       } }
     }}.filter(isWithinBounds)
-  }
 
   println(s"Day 1 size: ${calculateAntinodes(1).size}")
   println(s"Day 2 size: ${calculateAntinodes(input(0).size, true).size}")
