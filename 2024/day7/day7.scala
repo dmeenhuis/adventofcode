@@ -36,17 +36,17 @@ case class Calibration(testValue: Long, numbers: Vector[Long], operators: Vector
 @main def main() = {
   val input = Source.fromFile("day7.txt").getLines().toVector
   
-  val day1Calibrations = input.map {
+  val part1Calibrations = input.map {
     case s"$testValue: ${numbers}" =>
       Calibration(testValue.toLong, numbers.split(" ").map(_.toLong).toVector, Vector("+", "*"))
   }
-  val day1 = day1Calibrations.filter(_.isValid()).map(_.testValue).sum
-  println(day1)
+  val part1 = part1Calibrations.filter(_.isValid()).map(_.testValue).sum
+  println(part1)
 
-  val day2Calibrations = input.map {
+  val part2Calibrations = input.map {
     case s"$testValue: ${numbers}" =>
       Calibration(testValue.toLong, numbers.split(" ").map(_.toLong).toVector, Vector("+", "*", "||"))
   }
-  val day2 = day2Calibrations.filter(_.isValid()).map(_.testValue).sum
-  println(day2)
+  val part2 = part2Calibrations.filter(_.isValid()).map(_.testValue).sum
+  println(part2)
 }

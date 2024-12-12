@@ -32,5 +32,5 @@ object Day8 extends App:
       } }
     }}.filter(isWithinBounds)
 
-  println(s"Day 1 size: ${calculateAntinodes(1).size}")
-  println(s"Day 2 size: ${calculateAntinodes(input(0).size, true).size}")
+  println(s"Part 1 size: ${calculateAntinodes(1).size}")
+  println(s"Part 2 size: ${calculateAntinodes(input(0).size, true).size}")

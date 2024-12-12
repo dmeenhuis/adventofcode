@@ -18,15 +18,10 @@ object Main extends App:
   def findTrailHeadSummits(trailheads: Vector[Pos]): Map[Pos, Vector[Pos]] = {
     def loop(start: Pos, current: Pos, summits: Map[Pos, Vector[Pos]]): Map[Pos, Vector[Pos]] = {
         val positionsOneUp = getSurroundingPositions(current).filter(_.height == current.height + 1)
-
-        if (positionsOneUp.isEmpty) {
-          summits
-        } else {
-          positionsOneUp.foldLeft(summits)((acc, pos) =>
-            pos match {
-              case p if p.height == 9 => acc + (start -> (acc.get(start).fold(Vector())(n => n :+ p)))
-              case p => loop(start, p, acc)
-            })
+        if (positionsOneUp.isEmpty) summits
+        else {
+          positionsOneUp.foldLeft(summits)((acc, p) =>
+            if (p.height == 9) acc + (start -> (acc.get(start).fold(Vector())(n => n :+ p))) else loop(start, p, acc))
         }
     }
 
@@ -36,5 +31,4 @@ object Main extends App:
   val scores = findTrailHeadSummits(startingPositions).map { case (_, value) => value.distinct.size }.sum
   val ratings = findTrailHeadSummits(startingPositions).map { case (_, value) => value.size }.sum
 
-  println(s"Day 1: $scores")
-  println(s"Day 2: $ratings")
+  println(s"Part 1: $scores, part 2: $ratings")
